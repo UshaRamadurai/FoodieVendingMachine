@@ -8,7 +8,7 @@ public class VendingMachine {
     double balanceAmount=0;
     double amountInVendingMachine=0;
 
-    VendingMachine(){
+    public void menuCard(){
         System.out.println("-----Welcome to Foodie--------");
         System.out.println("Item_id----- Item----- Rate");
         System.out.println("1.Chocolate---10");
@@ -16,14 +16,23 @@ public class VendingMachine {
         System.out.println("3.Burger---140");
         System.out.println("4.Pizza---210");
         System.out.println("5.Sandwich---50");
+        userOrder();
     }
 
     public void userOrder(){
+        String nextOrder;
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the item_id");
         item_id = sc.nextInt();
         System.out.println("Enter amount paid");
         amountPaid = sc.nextDouble();
+        balanceAmountCalculation();
+        System.out.println("Do you want to go for another order? Type yes or no");
+        nextOrder = sc.next();
+        if(nextOrder.equals("yes"))
+            menuCard();
+       else
+            System.out.println("Thank you !!! visit again Foodies !!!");
     }
 
     public void balanceAmountCalculation(){
@@ -83,7 +92,7 @@ public class VendingMachine {
 
     public static void main(String[] args) {
         VendingMachine cust1 = new VendingMachine();
-        cust1.userOrder();
-        cust1.balanceAmountCalculation();
+        cust1.menuCard();
+
     }
 }
