@@ -3,6 +3,7 @@ package VendingMachine;
 import java.util.Scanner;
 
 public class VendingMachine {
+
     int item_id;
     double amountPaid;
     double balanceAmount=0;
@@ -16,6 +17,7 @@ public class VendingMachine {
         System.out.println("3.Burger---140");
         System.out.println("4.Pizza---210");
         System.out.println("5.Sandwich---50");
+        System.out.println("6.Amount in Vending Machine");
         userOrder();
     }
 
@@ -24,68 +26,54 @@ public class VendingMachine {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the item_id");
         item_id = sc.nextInt();
-        System.out.println("Enter amount paid");
-        amountPaid = sc.nextDouble();
+        if(item_id<6) {
+            System.out.println("Enter amount paid");
+            amountPaid = sc.nextDouble();
+        }
         balanceAmountCalculation();
         System.out.println("Do you want to go for another order? Type yes or no");
         nextOrder = sc.next();
-        if(nextOrder.equals("yes"))
+        if(nextOrder.equalsIgnoreCase("yes"))
             menuCard();
-       else
+        else
             System.out.println("Thank you !!! visit again Foodies !!!");
     }
-
+    public void amountTally(String item, double rate){
+        if (amountPaid > rate) {
+            balanceAmount = amountPaid - rate;
+            System.out.println("Balance amount given to user:" + balanceAmount);
+            System.out.println("Dispensing " + item);
+            amountInVendingMachine = amountInVendingMachine + rate;
+        }
+        else
+            System.out.println("Insufficient Amount");
+    }
     public void balanceAmountCalculation(){
         if (amountPaid>0) {
             switch (item_id) {
-                case 1: {
-                    if (amountPaid > 10)
-                        balanceAmount = amountPaid - 10;
-                        System.out.println("Balance amount given to user:" + balanceAmount);
-                    System.out.println("Dispensing Chocolate");
-                    amountInVendingMachine=amountInVendingMachine+10;
+                case 1:
+                    amountTally("Chocolate",10);
+                    break;
+                case 2:
+                    amountTally("IceCream",30);
+                    break;
+                case 3:
+                    amountTally("Burger",140);
+                    break;
+                case 4:
+                    amountTally("Pizza",210);
+                    break;
+                case 5:
+                    amountTally("Sandwich",50);
+                    break;
+                case 6:
                     System.out.println("Total amount in the Vending machine :" + amountInVendingMachine);
                     break;
-                }
-                case 2: {
-                    if (amountPaid > 30)
-                        balanceAmount = amountPaid - 30;
-                    System.out.println("Balance amount given to user:" + balanceAmount);
-                    System.out.println("Dispensing IceCream");
-                    amountInVendingMachine=amountInVendingMachine+30;
-                    System.out.println("Total amount in the Vending machine :" + amountInVendingMachine);
-                    break;
-                }
-                case 3: {
-                    if (amountPaid > 140)
-                        balanceAmount = amountPaid - 140;
-                    System.out.println("Balance amount given to user:" + balanceAmount);
-                    System.out.println("Dispensing Burger");
-                    amountInVendingMachine=amountInVendingMachine+140;
-                    System.out.println("Total amount in the Vending machine :" + amountInVendingMachine);
-                    break;
-                }
-                case 4: {
-                    if (amountPaid > 210)
-                        balanceAmount = amountPaid - 210;
-                    System.out.println("Balance amount given to user:" + balanceAmount);
-                    System.out.println("Dispensing Pizza");
-                    amountInVendingMachine=amountInVendingMachine+210;
-                    System.out.println("Total amount in the Vending machine :" + amountInVendingMachine);
-                    break;
-                }
-                case 5: {
-                    if (amountPaid > 50)
-                        balanceAmount = amountPaid - 50;
-                    System.out.println("Balance amount given to user:" + balanceAmount);
-                    System.out.println("Dispensing Sandwich");
-                    amountInVendingMachine=amountInVendingMachine+50;
-                    System.out.println("Total amount in the Vending machine :" + amountInVendingMachine);
-                    break;
-                }
                 default:
                     System.out.println("Wrong Item_id");
+                    break;
             }
+
         }
 
     }
@@ -96,3 +84,5 @@ public class VendingMachine {
 
     }
 }
+
+
