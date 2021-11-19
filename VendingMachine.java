@@ -1,5 +1,9 @@
 package VendingMachine;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class VendingMachine {
@@ -8,6 +12,8 @@ public class VendingMachine {
     double amountPaid;
     double balanceAmount=0;
     double amountInVendingMachine=0;
+    String timeStamp;
+    ArrayList<String> txn= new ArrayList<String>();
 
     public void menuCard(){
         System.out.println("-----Welcome to Foodie--------");
@@ -18,18 +24,23 @@ public class VendingMachine {
         System.out.println("4.Pizza---210");
         System.out.println("5.Sandwich---50");
         System.out.println("6.Amount in Vending Machine");
+        System.out.println("7.View all Previous Orders");
         userOrder();
     }
 
     public void userOrder(){
         String nextOrder;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the item_id");
+        System.out.println("Enter the Item_id");
         item_id = sc.nextInt();
-        if(item_id<6) {
+        if(item_id>0 && item_id<6) {
             System.out.println("Enter amount paid");
             amountPaid = sc.nextDouble();
         }
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a");
+        timeStamp =sdf.format(date);
         balanceAmountCalculation();
         System.out.println("Do you want to go for another order? Type yes or no");
         nextOrder = sc.next();
@@ -38,18 +49,34 @@ public class VendingMachine {
         else
             System.out.println("Thank you !!! visit again Foodies !!!");
     }
+    public void saveOrderHistory(String timeStamp1,int item_id1,double amountPaid1,
+                                 double balanceAmount1,double amountInVendingMachine1){
+
+        txn.add(timeStamp1 + "  |  " + item_id1 + "  |  " +amountPaid1 + "  |  " +
+                balanceAmount1 + "  |  " + amountInVendingMachine1);
+    }
     public void amountTally(String item, double rate){
-        if (amountPaid > rate) {
+        if (amountPaid >= rate) {
             balanceAmount = amountPaid - rate;
             System.out.println("Balance amount given to user:" + balanceAmount);
             System.out.println("Dispensing " + item);
             amountInVendingMachine = amountInVendingMachine + rate;
+            saveOrderHistory(timeStamp,item_id,amountPaid,balanceAmount,amountInVendingMachine);
         }
         else
             System.out.println("Insufficient Amount");
     }
+    public void previousOrders(){
+        System.out.println("Timestamp of transaction | Item_id | Amount paid by user | " +
+                "Balance returned to user | Amount in VM");
+        if(txn.size()>0){
+            txn.forEach(txnValues ->System.out.println(txnValues));
+        }else
+        {
+            System.out.println("No transactions to show");
+        }
+    }
     public void balanceAmountCalculation(){
-        if (amountPaid>0) {
             switch (item_id) {
                 case 1:
                     amountTally("Chocolate",10);
@@ -69,18 +96,18 @@ public class VendingMachine {
                 case 6:
                     System.out.println("Total amount in the Vending machine :" + amountInVendingMachine);
                     break;
+                case 7:
+                    previousOrders();
+                    break;
                 default:
-                    System.out.println("Wrong Item_id");
+                    System.out.println("Enter valid item id");
                     break;
             }
-
-        }
-
     }
 
     public static void main(String[] args) {
         VendingMachine cust1 = new VendingMachine();
-        cust1.menuCard();
+       cust1.menuCard();
 
     }
 }
